@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Sample GitHub Site</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-logo">Sample Site</h1>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link active">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Sample Projects</h1>
+                <p>Explore our collection of demo projects</p>
+            </div>
+        </section>
+
+        <section class="projects">
+            <div class="container">
+                <div class="project-grid">
+                    <div class="project-card" data-project="web-app">
+                        <div class="project-image">
+                            <div class="placeholder-image">🌐</div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Web Application</h3>
+                            <p>A responsive web application built with modern HTML, CSS, and JavaScript featuring dynamic content and user interactions.</p>
+                            <div class="project-tags">
+                                <span class="tag">HTML</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">JavaScript</span>
+                            </div>
+                            <button class="project-btn" onclick="showProjectDetails('web-app')">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="mobile-first">
+                        <div class="project-image">
+                            <div class="placeholder-image">📱</div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Mobile-First Design</h3>
+                            <p>A demonstration of mobile-first responsive design principles with progressive enhancement for larger screens.</p>
+                            <div class="project-tags">
+                                <span class="tag">Responsive</span>
+                                <span class="tag">Mobile</span>
+                                <span class="tag">CSS Grid</span>
+                            </div>
+                            <button class="project-btn" onclick="showProjectDetails('mobile-first')">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="interactive">
+                        <div class="project-image">
+                            <div class="placeholder-image">⚡</div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Interactive Components</h3>
+                            <p>Collection of interactive UI components and animations built with vanilla JavaScript and CSS transitions.</p>
+                            <div class="project-tags">
+                                <span class="tag">Animation</span>
+                                <span class="tag">Interactive</span>
+                                <span class="tag">UI/UX</span>
+                            </div>
+                            <button class="project-btn" onclick="showProjectDetails('interactive')">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="github-pages">
+                        <div class="project-image">
+                            <div class="placeholder-image">🚀</div>
+                        </div>
+                        <div class="project-content">
+                            <h3>GitHub Pages Site</h3>
+                            <p>This very site! A complete example of how to create and deploy a multi-page website using GitHub Pages.</p>
+                            <div class="project-tags">
+                                <span class="tag">GitHub</span>
+                                <span class="tag">Deployment</span>
+                                <span class="tag">Static Site</span>
+                            </div>
+                            <button class="project-btn" onclick="showProjectDetails('github-pages')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Details Modal -->
+        <div id="project-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modal-body">
+                    <!-- Project details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Sample GitHub Site. Built for testing purposes.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html> 
