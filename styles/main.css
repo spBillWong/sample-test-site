@@ -448,6 +448,568 @@ footer {
     }
 }
 
+/* Test Pages Styles */
+.tests {
+    padding: 60px 0;
+    background: white;
+}
+
+.test-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.test-intro h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.test-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.test-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.test-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.test-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.test-content h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.test-content p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.test-features {
+    margin-bottom: 2rem;
+}
+
+.feature-tag {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin: 0.2rem;
+    font-weight: 500;
+}
+
+.test-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.test-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.test-info {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.test-info h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #3498db;
+}
+
+.info-item h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.info-item p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Test Content Pages */
+.test-content {
+    padding: 60px 0;
+    background: white;
+}
+
+.back-link {
+    display: inline-block;
+    color: #3498db;
+    text-decoration: none;
+    margin-top: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #2980b9;
+}
+
+.test-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.test-controls, .test-results {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.test-controls h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.test-controls p {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.test-action-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.test-action-btn:not(:disabled) {
+    background: #3498db;
+    color: white;
+}
+
+.test-action-btn.secondary:not(:disabled) {
+    background: #27ae60;
+}
+
+.test-action-btn.danger:not(:disabled) {
+    background: #e74c3c;
+}
+
+.test-action-btn:disabled {
+    background: #bdc3c7;
+    color: #7f8c8d;
+    cursor: not-allowed;
+}
+
+.test-action-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.status-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.status-message.info {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-left: 4px solid #2196f3;
+}
+
+.status-message.success {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border-left: 4px solid #4caf50;
+}
+
+.status-message.error {
+    background: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #f44336;
+}
+
+.results-container {
+    min-height: 200px;
+}
+
+.no-data {
+    color: #999;
+    text-align: center;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Geolocation specific styles */
+.location-data {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.location-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.location-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.location-item strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.coordinates, .accuracy-info, .altitude-info {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+}
+
+.coord-value {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.accuracy-level {
+    color: #27ae60;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+
+.timestamp {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.location-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.map-btn, .copy-btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.map-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.copy-btn {
+    background: #ff9800;
+    color: white;
+}
+
+.map-btn:hover, .copy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Camera specific styles */
+.camera-test-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.camera-controls {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.camera-display {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+}
+
+#videoElement {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.placeholder-content {
+    text-align: center;
+}
+
+.camera-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.captured-photos {
+    margin-top: 3rem;
+}
+
+.captured-photos h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.no-photos {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 2rem;
+}
+
+.photo-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.photo-wrapper {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.captured-photo {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-wrapper:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.photo-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.download-btn {
+    background: #4caf50;
+}
+
+.view-btn {
+    background: #2196f3;
+}
+
+.delete-btn {
+    background: #f44336;
+}
+
+.photo-btn:hover {
+    transform: scale(1.05);
+}
+
+.photo-info {
+    padding: 1rem;
+    background: white;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.photo-timestamp, .photo-size {
+    margin-bottom: 0.3rem;
+}
+
+/* Photo Modal */
+.photo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.photo-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.photo-modal-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.photo-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.photo-modal-close:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.test-info-panel {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.test-info-panel h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.info-content h4 {
+    color: #2c3e50;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-content h4:first-child {
+    margin-top: 0;
+}
+
+.info-content ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.info-content li {
+    margin-bottom: 0.3rem;
+    color: #666;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
@@ -517,5 +1079,49 @@ footer {
         width: 95%;
         margin: 10% auto;
         padding: 1.5rem;
+    }
+
+    /* Test pages responsive */
+    .test-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .test-panel {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .camera-test-panel {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .test-action-btn {
+        width: 100%;
+    }
+
+    .location-actions {
+        flex-direction: column;
+    }
+
+    .map-btn, .copy-btn {
+        width: 100%;
+    }
+
+    .photo-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-actions {
+        justify-content: center;
     }
 } 

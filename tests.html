@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests - Sample GitHub Site</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-logo">Sample Site</h1>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="tests.html" class="nav-link active">Tests</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Browser API Tests</h1>
+                <p>Test various browser APIs and features</p>
+            </div>
+        </section>
+
+        <section class="tests">
+            <div class="container">
+                <div class="test-intro">
+                    <h2>Available Tests</h2>
+                    <p>This section contains various tests for modern browser APIs. These tests demonstrate how to interact with device features and browser capabilities.</p>
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <div class="test-icon">📍</div>
+                        <div class="test-content">
+                            <h3>Geolocation Test</h3>
+                            <p>Test the browser's geolocation API to get your current position coordinates. This test will request permission to access your location.</p>
+                            <div class="test-features">
+                                <span class="feature-tag">GPS</span>
+                                <span class="feature-tag">Location</span>
+                                <span class="feature-tag">Coordinates</span>
+                            </div>
+                            <a href="test-geolocation.html" class="test-btn">Run Geolocation Test</a>
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-icon">📷</div>
+                        <div class="test-content">
+                            <h3>Camera Test</h3>
+                            <p>Test the browser's camera access using the MediaDevices API. This test will request permission to access your camera for photo capture.</p>
+                            <div class="test-features">
+                                <span class="feature-tag">Camera</span>
+                                <span class="feature-tag">Photo</span>
+                                <span class="feature-tag">MediaDevices</span>
+                            </div>
+                            <a href="test-camera.html" class="test-btn">Run Camera Test</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-info">
+                    <h3>Important Notes</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h4>🔒 Privacy & Permissions</h4>
+                            <p>These tests require browser permissions. Your browser will ask for permission before accessing location or camera data.</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>🌐 HTTPS Required</h4>
+                            <p>Most modern browsers require HTTPS for accessing sensitive APIs like geolocation and camera. These tests work best on secure connections.</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>📱 Device Support</h4>
+                            <p>Feature availability depends on your device and browser. Some features may not be available on all platforms.</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>🔧 Browser Compatibility</h4>
+                            <p>These APIs are supported in modern browsers. Older browsers may not support all features tested here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Sample GitHub Site. Built for testing purposes.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html> 

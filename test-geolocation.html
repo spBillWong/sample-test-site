@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Test - Sample GitHub Site</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-logo">Sample Site</h1>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="tests.html" class="nav-link">Tests</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>📍 Geolocation Test</h1>
+                <p>Test your browser's geolocation capabilities</p>
+                <a href="tests.html" class="back-link">← Back to Tests</a>
+            </div>
+        </section>
+
+        <section class="test-content">
+            <div class="container">
+                <div class="test-panel">
+                    <div class="test-controls">
+                        <h2>Geolocation API Test</h2>
+                        <p>Click the button below to request your current location. Your browser will ask for permission to access your location data.</p>
+                        
+                        <div class="button-group">
+                            <button id="getLocationBtn" class="test-action-btn">Get My Location</button>
+                            <button id="watchLocationBtn" class="test-action-btn secondary">Watch Location</button>
+                            <button id="stopWatchBtn" class="test-action-btn danger" disabled>Stop Watching</button>
+                        </div>
+
+                        <div id="status" class="status-message"></div>
+                    </div>
+
+                    <div class="test-results">
+                        <h3>Location Results</h3>
+                        <div id="locationResults" class="results-container">
+                            <p class="no-data">No location data yet. Click "Get My Location" to start.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-info-panel">
+                    <h3>About Geolocation API</h3>
+                    <div class="info-content">
+                        <h4>What it does:</h4>
+                        <ul>
+                            <li>Retrieves your device's current geographic position</li>
+                            <li>Provides latitude and longitude coordinates</li>
+                            <li>Can track location changes in real-time</li>
+                            <li>Includes accuracy information</li>
+                        </ul>
+
+                        <h4>Privacy & Security:</h4>
+                        <ul>
+                            <li>Requires explicit user permission</li>
+                            <li>Works best over HTTPS connections</li>
+                            <li>Location data stays in your browser</li>
+                            <li>You can revoke permission at any time</li>
+                        </ul>
+
+                        <h4>Accuracy depends on:</h4>
+                        <ul>
+                            <li>GPS availability (mobile devices)</li>
+                            <li>WiFi network information</li>
+                            <li>IP address geolocation</li>
+                            <li>Device capabilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Sample GitHub Site. Built for testing purposes.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/geolocation-test.js"></script>
+</body>
+</html> 

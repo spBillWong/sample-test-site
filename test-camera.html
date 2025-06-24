@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test - Sample GitHub Site</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-logo">Sample Site</h1>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="projects.html" class="nav-link">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="tests.html" class="nav-link">Tests</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>📷 Camera Test</h1>
+                <p>Test your browser's camera access capabilities</p>
+                <a href="tests.html" class="back-link">← Back to Tests</a>
+            </div>
+        </section>
+
+        <section class="test-content">
+            <div class="container">
+                <div class="camera-test-panel">
+                    <div class="camera-controls">
+                        <h2>Camera API Test</h2>
+                        <p>Click "Start Camera" to access your device's camera. Your browser will request permission to use your camera.</p>
+                        
+                        <div class="button-group">
+                            <button id="startCameraBtn" class="test-action-btn">Start Camera</button>
+                            <button id="takePictureBtn" class="test-action-btn secondary" disabled>Take Picture</button>
+                            <button id="stopCameraBtn" class="test-action-btn danger" disabled>Stop Camera</button>
+                        </div>
+
+                        <div id="cameraStatus" class="status-message"></div>
+                    </div>
+
+                    <div class="camera-display">
+                        <div class="video-container">
+                            <video id="videoElement" autoplay playsinline></video>
+                            <div id="videoPlaceholder" class="video-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="camera-icon">📷</div>
+                                    <p>Camera preview will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="captured-photos">
+                    <h3>Captured Photos</h3>
+                    <div id="photoGallery" class="photo-gallery">
+                        <p class="no-photos">No photos captured yet. Start the camera and take a picture!</p>
+                    </div>
+                </div>
+
+                <div class="camera-info-panel">
+                    <h3>About Camera API</h3>
+                    <div class="info-content">
+                        <h4>What it does:</h4>
+                        <ul>
+                            <li>Accesses your device's camera</li>
+                            <li>Displays live video preview</li>
+                            <li>Captures photos as images</li>
+                            <li>Supports multiple camera sources</li>
+                        </ul>
+
+                        <h4>Privacy & Security:</h4>
+                        <ul>
+                            <li>Requires explicit user permission</li>
+                            <li>Camera indicator shows when active</li>
+                            <li>Photos are processed locally</li>
+                            <li>No data is sent to servers</li>
+                        </ul>
+
+                        <h4>Browser Support:</h4>
+                        <ul>
+                            <li>Modern browsers support MediaDevices API</li>
+                            <li>HTTPS required for security</li>
+                            <li>Mobile and desktop compatible</li>
+                            <li>Fallback handling for unsupported browsers</li>
+                        </ul>
+
+                        <h4>Features:</h4>
+                        <ul>
+                            <li>Real-time video preview</li>
+                            <li>Photo capture and download</li>
+                            <li>Camera start/stop controls</li>
+                            <li>Error handling and status updates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Sample GitHub Site. Built for testing purposes.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/camera-test.js"></script>
+</body>
+</html> 
