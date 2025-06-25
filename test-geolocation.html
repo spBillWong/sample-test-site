@@ -18,71 +18,49 @@
 
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 20px;
-            line-height: 1.6;
             background-color: #f5f5f5;
         }
-        
         .container {
-            max-width: 600px;
-            margin: 0 auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .status {
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-        
-        .status.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .status.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .status.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
-        .status.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-        
         button {
-            background-color: #007bff;
+            background: #007AFF;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 8px;
             font-size: 16px;
-            margin: 5px;
+            margin: 10px 5px;
+            cursor: pointer;
         }
-        
-        button:hover { background-color: #0056b3; }
-        button:disabled { background-color: #6c757d; cursor: not-allowed; }
-        
+        button:hover {
+            background: #0056CC;
+        }
         .log {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
             padding: 10px;
             margin: 10px 0;
-            font-family: 'Courier New', monospace;
+            border-radius: 5px;
+            font-family: monospace;
             font-size: 12px;
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
         }
-        
-        .clear-btn {
-            background-color: #6c757d;
-            font-size: 14px;
-            padding: 8px 16px;
-        }
-        
-        .coordinates {
-            background-color: #e8f5e8;
-            padding: 15px;
-            border-radius: 8px;
+        .status {
+            padding: 10px;
             margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
         }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
     </style>
 </head>
 <body>
@@ -118,7 +96,7 @@
 
     <main>
         <section class="page-header">
-            <div class="container">
+            <div class="page-container">
                 <h1>📍 Geolocation Test</h1>
                 <p>Test your browser's geolocation capabilities</p>
                 <a href="tests.html" class="back-link">← Back to Tests</a>
@@ -127,292 +105,162 @@
 
         <section class="test-content">
             <div class="container">
-                <h1>🗺️ WebView Geolocation Test</h1>
-                <p>This page handles all geolocation testing and displays results directly in the web page.</p>
+                <h1>🗺️ Geolocation Test</h1>
                 
-                <div id="browserInfo" class="status info">
-                    <strong>Browser Info:</strong><br>
-                    <span id="userAgent"></span><br>
-                    <span id="platform"></span><br>
-                    <span id="secure"></span>
+                <div id="status" class="status info">
+                    Ready to test geolocation...
                 </div>
                 
-                                 <div id="geolocationSupport" class="status"></div>
-                 
-                 <div id="iosNote" class="status warning" style="display: none;">
-                     <strong>📱 iOS Note:</strong> On iPhone/iPad, the first location request after granting permission may fail. The app will automatically retry. This is normal iOS behavior.
-                 </div>
-                 
-                 <div style="text-align: center; margin: 20px 0;">
-                     <button onclick="testGeolocation()" id="testBtn">🔍 Test Current Location</button>
-                     <button onclick="testWatchPosition()" id="watchBtn">👁️ Watch Position</button>
-                     <button onclick="stopWatching()" id="stopBtn" disabled>⏹️ Stop Watching</button>
-                     <button onclick="clearResults()" class="clear-btn">🗑️ Clear Results</button>
-                 </div>
+                <button onclick="testGeolocation()">Get Current Location</button>
+                <button onclick="watchLocation()">Watch Position</button>
+                <button onclick="stopWatching()">Stop Watching</button>
+                <button onclick="clearLog()">Clear Log</button>
                 
-                <div id="results"></div>
-                
-                <div id="coordinates" style="display: none;"></div>
-                
-                <h3>📋 Activity Log</h3>
+                <h3>Log Output:</h3>
                 <div id="log" class="log"></div>
+                
+                <h3>Browser Info:</h3>
+                <div class="log">
+                    <div>User Agent: <span id="userAgent"></span></div>
+                    <div>Platform: <span id="platform"></span></div>
+                    <div>Geolocation Available: <span id="geoAvailable"></span></div>
+                    <div>HTTPS: <span id="https"></span></div>
+                </div>
             </div>
         
             <script>
                 let watchId = null;
-                let testCount = 0;
                 
-                function log(message, type = 'info') {
-                    const timestamp = new Date().toLocaleTimeString();
+                function log(message) {
                     const logDiv = document.getElementById('log');
-                    const logEntry = document.createElement('div');
-                    logEntry.innerHTML = `[${timestamp}] ${message}`;
-                    logEntry.style.color = type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#333';
-                    logDiv.appendChild(logEntry);
+                    const time = new Date().toLocaleTimeString();
+                    logDiv.innerHTML += `[${time}] ${message}<br>`;
                     logDiv.scrollTop = logDiv.scrollHeight;
+                    console.log(`[${time}] ${message}`);
                 }
                 
-                function showResult(message, type) {
-                    const resultsDiv = document.getElementById('results');
-                    resultsDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+                function updateStatus(message, type) {
+                    const statusDiv = document.getElementById('status');
+                    statusDiv.textContent = message;
+                    statusDiv.className = `status ${type}`;
                 }
                 
-                function showCoordinates(position) {
-                    const coordDiv = document.getElementById('coordinates');
-                    coordDiv.style.display = 'block';
-                    coordDiv.innerHTML = `
-                        <div class="coordinates">
-                            <h3>📍 Location Details</h3>
-                            <strong>Latitude:</strong> ${position.coords.latitude}<br>
-                            <strong>Longitude:</strong> ${position.coords.longitude}<br>
-                            <strong>Accuracy:</strong> ${position.coords.accuracy} meters<br>
-                            <strong>Altitude:</strong> ${position.coords.altitude || 'N/A'}<br>
-                            <strong>Speed:</strong> ${position.coords.speed || 'N/A'}<br>
-                            <strong>Heading:</strong> ${position.coords.heading || 'N/A'}<br>
-                            <strong>Timestamp:</strong> ${new Date(position.timestamp).toLocaleString()}
-                        </div>
-                    `;
+                function testGeolocation() {
+                    log('🗺️ Testing getCurrentPosition...');
+                    updateStatus('Requesting location...', 'info');
+                    
+                    if (!navigator.geolocation) {
+                        log('❌ Geolocation is not supported by this browser');
+                        updateStatus('Geolocation not supported', 'error');
+                        return;
+                    }
+                    
+                    const options = {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    };
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            log('✅ Location received successfully!');
+                            log(`📍 Latitude: ${position.coords.latitude}`);
+                            log(`📍 Longitude: ${position.coords.longitude}`);
+                            log(`📍 Accuracy: ${position.coords.accuracy} meters`);
+                            log(`📍 Timestamp: ${new Date(position.timestamp).toLocaleString()}`);
+                            updateStatus('Location received successfully!', 'success');
+                        },
+                        function(error) {
+                            log(`❌ Geolocation error: ${error.message}`);
+                            log(`❌ Error code: ${error.code}`);
+                            switch(error.code) {
+                                case error.PERMISSION_DENIED:
+                                    log('❌ User denied the request for Geolocation');
+                                    updateStatus('Permission denied', 'error');
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    log('❌ Location information is unavailable');
+                                    updateStatus('Position unavailable', 'error');
+                                    break;
+                                case error.TIMEOUT:
+                                    log('❌ The request to get user location timed out');
+                                    updateStatus('Request timed out', 'error');
+                                    break;
+                                default:
+                                    log('❌ An unknown error occurred');
+                                    updateStatus('Unknown error', 'error');
+                                    break;
+                            }
+                        },
+                        options
+                    );
                 }
                 
-                function clearResults() {
-                    document.getElementById('results').innerHTML = '';
-                    document.getElementById('coordinates').style.display = 'none';
-                    document.getElementById('log').innerHTML = '';
-                    log('🗑️ Results cleared');
+                function watchLocation() {
+                    if (watchId !== null) {
+                        log('⚠️ Already watching location');
+                        return;
+                    }
+                    
+                    log('🗺️ Starting to watch position...');
+                    updateStatus('Watching location...', 'info');
+                    
+                    const options = {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 1000
+                    };
+                    
+                    watchId = navigator.geolocation.watchPosition(
+                        function(position) {
+                            log('📍 Watch position update:');
+                            log(`   Latitude: ${position.coords.latitude}`);
+                            log(`   Longitude: ${position.coords.longitude}`);
+                            log(`   Accuracy: ${position.coords.accuracy} meters`);
+                            updateStatus('Location updates active', 'success');
+                        },
+                        function(error) {
+                            log(`❌ Watch error: ${error.message} (Code: ${error.code})`);
+                            updateStatus('Watch error', 'error');
+                        },
+                        options
+                    );
                 }
-                
-                function testGeolocation(retryCount = 0) {
-                     if (retryCount === 0) {
-                         testCount++;
-                         log(`🔍 Starting geolocation test #${testCount}`);
-                     } else {
-                         log(`🔄 Retry attempt #${retryCount}`);
-                     }
-                     
-                     if (!navigator.geolocation) {
-                         showResult('❌ Geolocation is not supported by this browser', 'error');
-                         log('❌ Geolocation API not available', 'error');
-                         return;
-                     }
-                     
-                     const options = {
-                         enableHighAccuracy: true,
-                         timeout: retryCount === 0 ? 15000 : 8000, // Longer timeout on first try
-                         maximumAge: 0  // Force fresh request
-                     };
-                     
-                     if (retryCount === 0) {
-                         log(`⚙️ Using options: ${JSON.stringify(options)}`);
-                         document.getElementById('testBtn').disabled = true;
-                         showResult('🔄 Requesting current location...', 'info');
-                     }
-                     
-                     navigator.geolocation.getCurrentPosition(
-                         function(position) {
-                             log('✅ Location obtained successfully', 'success');
-                             showResult('✅ Location obtained successfully!', 'success');
-                             showCoordinates(position);
-                             document.getElementById('testBtn').disabled = false;
-                         },
-                         function(error) {
-                             let errorType = 'Unknown';
-                             let errorAdvice = '';
-                             let shouldRetry = false;
-                             
-                             switch(error.code) {
-                                 case error.PERMISSION_DENIED:
-                                     errorType = 'Permission denied by user';
-                                     errorAdvice = 'Please allow location access in your device settings and try again.';
-                                     break;
-                                 case error.POSITION_UNAVAILABLE:
-                                     errorType = 'Position unavailable';
-                                     errorAdvice = 'Location information is unavailable. Check your GPS/WiFi connection.';
-                                     // Sometimes iOS reports POSITION_UNAVAILABLE right after permission granted
-                                     shouldRetry = retryCount < 2;
-                                     break;
-                                 case error.TIMEOUT:
-                                     errorType = 'Request timeout';
-                                     errorAdvice = 'Location request timed out.';
-                                     // Retry on timeout, especially on first attempt (permission flow)
-                                     shouldRetry = retryCount < 2;
-                                     break;
-                             }
-                             
-                             log(`❌ Geolocation error: Code ${error.code} - ${error.message}`, 'error');
-                             
-                             // Auto-retry for iOS permission flow issues
-                             if (shouldRetry && retryCount < 2) {
-                                 log(`🔄 Will retry in 2 seconds (attempt ${retryCount + 1}/2)...`);
-                                 showResult(`⏳ ${errorType}. Retrying in 2 seconds...`, 'warning');
-                                 
-                                 setTimeout(() => {
-                                     testGeolocation(retryCount + 1);
-                                 }, 2000);
-                                 return;
-                             }
-                             
-                             const errorMsg = `❌ Error getting location:<br>
-                                 <strong>Error code:</strong> ${error.code}<br>
-                                 <strong>Error message:</strong> ${error.message}<br>
-                                 <strong>Type:</strong> ${errorType}<br>
-                                 <strong>Advice:</strong> ${errorAdvice}`;
-                             
-                             showResult(errorMsg, 'error');
-                             document.getElementById('testBtn').disabled = false;
-                         },
-                         options
-                     );
-                 }
-                
-                                 function testWatchPosition() {
-                     if (!navigator.geolocation) {
-                         showResult('❌ Geolocation is not supported', 'error');
-                         return;
-                     }
-                     
-                     if (watchId !== null) {
-                         log('⚠️ Already watching position', 'error');
-                         return;
-                     }
-                     
-                     log('👁️ Starting to watch position');
-                     document.getElementById('watchBtn').disabled = true;
-                     document.getElementById('stopBtn').disabled = false;
-                     showResult('🔄 Starting position watch...', 'info');
-                     
-                     const options = {
-                         enableHighAccuracy: true,
-                         timeout: 20000, // Longer timeout for watch
-                         maximumAge: 0
-                     };
-                     
-                     let firstPositionReceived = false;
-                     
-                     watchId = navigator.geolocation.watchPosition(
-                         function(position) {
-                             if (!firstPositionReceived) {
-                                 log('📍 First position received in watch mode', 'success');
-                                 showResult('📍 Position being watched - updates will appear below', 'success');
-                                 firstPositionReceived = true;
-                             } else {
-                                 log('📍 Position update received', 'success');
-                             }
-                             showCoordinates(position);
-                         },
-                         function(error) {
-                             log(`❌ Watch position error: Code ${error.code} - ${error.message}`, 'error');
-                             
-                             // Handle the same iOS permission issues
-                             if (error.code === error.TIMEOUT || error.code === error.POSITION_UNAVAILABLE) {
-                                 if (!firstPositionReceived) {
-                                     log('🔄 Watch position failed on first attempt, this might be iOS permission timing');
-                                     showResult(`⚠️ Watch failed initially (Code ${error.code}). Try "Test Current Location" first, then retry watch.`, 'warning');
-                                 } else {
-                                     showResult(`❌ Watch position error: ${error.message}`, 'error');
-                                 }
-                             } else {
-                                 showResult(`❌ Watch position failed: ${error.message}`, 'error');
-                             }
-                             
-                             stopWatching();
-                         },
-                         options
-                     );
-                 }
                 
                 function stopWatching() {
                     if (watchId !== null) {
                         navigator.geolocation.clearWatch(watchId);
                         watchId = null;
-                        log('⏹️ Stopped watching position');
+                        log('🛑 Stopped watching position');
+                        updateStatus('Stopped watching', 'info');
+                    } else {
+                        log('⚠️ Not currently watching position');
                     }
-                    
-                    document.getElementById('watchBtn').disabled = false;
-                    document.getElementById('stopBtn').disabled = true;
                 }
                 
-                                 // Initialize page
-                 window.addEventListener('load', function() {
-                     // Display browser info
-                     document.getElementById('userAgent').textContent = `User Agent: ${navigator.userAgent}`;
-                     document.getElementById('platform').textContent = `Platform: ${navigator.platform}`;
-                     document.getElementById('secure').textContent = `Secure Context: ${window.isSecureContext}`;
-                     
-                     // Check if this is an iOS device
-                     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                     
-                     if (isIOS) {
-                         document.getElementById('iosNote').style.display = 'block';
-                         log('📱 iOS device detected - showing iOS-specific guidance');
-                     }
-                     
-                     // Check geolocation support
-                     const supportDiv = document.getElementById('geolocationSupport');
-                     if (navigator.geolocation) {
-                         supportDiv.innerHTML = '✅ Geolocation API is supported and ready';
-                         supportDiv.className = 'status success';
-                         log('✅ Geolocation API is available');
-                     } else {
-                         supportDiv.innerHTML = '❌ Geolocation API is not supported in this browser';
-                         supportDiv.className = 'status error';
-                         log('❌ Geolocation API not supported', 'error');
-                     }
-                    
-                                         // Check permissions API if available
-                     if (navigator.permissions) {
-                         navigator.permissions.query({name: 'geolocation'}).then(function(result) {
-                             log(`📋 Permission status: ${result.state}`);
-                             
-                             // Listen for permission changes
-                             result.addEventListener('change', function() {
-                                 log(`📋 Permission changed to: ${result.state}`);
-                                 if (result.state === 'granted') {
-                                     log('✅ Permission granted! Location should now work.');
-                                 }
-                             });
-                         }).catch(function(err) {
-                             log(`⚠️ Could not query permissions: ${err.message}`);
-                         });
-                     } else {
-                         log('📋 Permissions API not available (normal on iOS)');
-                     }
-                    
-                    log('🌐 Page loaded and ready for geolocation testing');
-                });
+                function clearLog() {
+                    document.getElementById('log').innerHTML = '';
+                }
                 
-                // Override console.log to also log to our custom log
-                const originalLog = console.log;
-                console.log = function() {
-                    originalLog.apply(console, arguments);
-                    const message = Array.prototype.slice.call(arguments).join(' ');
-                    // Only log messages that aren't already logged by our functions
-                    if (!message.includes('[') || !message.includes(']')) {
-                        log(`🖥️ Console: ${message}`);
-                    }
-                };
-            </script>
+                // Initialize browser info
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('userAgent').textContent = navigator.userAgent;
+                    document.getElementById('platform').textContent = navigator.platform;
+                    document.getElementById('geoAvailable').textContent = navigator.geolocation ? 'YES' : 'NO';
+                    document.getElementById('https').textContent = location.protocol === 'https:' ? 'YES' : 'NO';
                     
+                    log('🗺️ Geolocation test page loaded');
+                    log(`🗺️ Geolocation API available: ${navigator.geolocation ? 'YES' : 'NO'}`);
+                    
+                    // Test permission state if available
+                    if (navigator.permissions) {
+                        navigator.permissions.query({name: 'geolocation'}).then(function(result) {
+                            log(`🗺️ Permission state: ${result.state}`);
+                        });
+                    }
+                });
+            </script>
+                            
         </section>
     </main>
 
