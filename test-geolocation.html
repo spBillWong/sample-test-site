@@ -137,14 +137,18 @@
                     <span id="secure"></span>
                 </div>
                 
-                <div id="geolocationSupport" class="status"></div>
-                
-                <div style="text-align: center; margin: 20px 0;">
-                    <button onclick="testGeolocation()" id="testBtn">🔍 Test Current Location</button>
-                    <button onclick="testWatchPosition()" id="watchBtn">👁️ Watch Position</button>
-                    <button onclick="stopWatching()" id="stopBtn" disabled>⏹️ Stop Watching</button>
-                    <button onclick="clearResults()" class="clear-btn">🗑️ Clear Results</button>
-                </div>
+                                 <div id="geolocationSupport" class="status"></div>
+                 
+                 <div id="iosNote" class="status warning" style="display: none;">
+                     <strong>📱 iOS Note:</strong> On iPhone/iPad, the first location request after granting permission may fail. The app will automatically retry. This is normal iOS behavior.
+                 </div>
+                 
+                 <div style="text-align: center; margin: 20px 0;">
+                     <button onclick="testGeolocation()" id="testBtn">🔍 Test Current Location</button>
+                     <button onclick="testWatchPosition()" id="watchBtn">👁️ Watch Position</button>
+                     <button onclick="stopWatching()" id="stopBtn" disabled>⏹️ Stop Watching</button>
+                     <button onclick="clearResults()" class="clear-btn">🗑️ Clear Results</button>
+                 </div>
                 
                 <div id="results"></div>
                 
@@ -197,102 +201,144 @@
                     log('🗑️ Results cleared');
                 }
                 
-                function testGeolocation() {
-                    testCount++;
-                    log(`🔍 Starting geolocation test #${testCount}`);
-                    
-                    if (!navigator.geolocation) {
-                        showResult('❌ Geolocation is not supported by this browser', 'error');
-                        log('❌ Geolocation API not available', 'error');
-                        return;
-                    }
-                    
-                    const options = {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0  // Force fresh request
-                    };
-                    
-                    log(`⚙️ Using options: ${JSON.stringify(options)}`);
-                    
-                    document.getElementById('testBtn').disabled = true;
-                    showResult('🔄 Requesting current location...', 'info');
-                    
-                    navigator.geolocation.getCurrentPosition(
-                        function(position) {
-                            log('✅ Location obtained successfully', 'success');
-                            showResult('✅ Location obtained successfully!', 'success');
-                            showCoordinates(position);
-                            document.getElementById('testBtn').disabled = false;
-                        },
-                        function(error) {
-                            let errorType = 'Unknown';
-                            let errorAdvice = '';
-                            
-                            switch(error.code) {
-                                case error.PERMISSION_DENIED:
-                                    errorType = 'Permission denied by user';
-                                    errorAdvice = 'Please allow location access in your device settings and try again.';
-                                    break;
-                                case error.POSITION_UNAVAILABLE:
-                                    errorType = 'Position unavailable';
-                                    errorAdvice = 'Location information is unavailable. Check your GPS/WiFi connection.';
-                                    break;
-                                case error.TIMEOUT:
-                                    errorType = 'Request timeout';
-                                    errorAdvice = 'Location request timed out. Try again.';
-                                    break;
-                            }
-                            
-                            const errorMsg = `❌ Error getting location:<br>
-                                <strong>Error code:</strong> ${error.code}<br>
-                                <strong>Error message:</strong> ${error.message}<br>
-                                <strong>Type:</strong> ${errorType}<br>
-                                <strong>Advice:</strong> ${errorAdvice}`;
-                            
-                            showResult(errorMsg, 'error');
-                            log(`❌ Geolocation error: Code ${error.code} - ${error.message}`, 'error');
-                            document.getElementById('testBtn').disabled = false;
-                        },
-                        options
-                    );
-                }
+                function testGeolocation(retryCount = 0) {
+                     if (retryCount === 0) {
+                         testCount++;
+                         log(`🔍 Starting geolocation test #${testCount}`);
+                     } else {
+                         log(`🔄 Retry attempt #${retryCount}`);
+                     }
+                     
+                     if (!navigator.geolocation) {
+                         showResult('❌ Geolocation is not supported by this browser', 'error');
+                         log('❌ Geolocation API not available', 'error');
+                         return;
+                     }
+                     
+                     const options = {
+                         enableHighAccuracy: true,
+                         timeout: retryCount === 0 ? 15000 : 8000, // Longer timeout on first try
+                         maximumAge: 0  // Force fresh request
+                     };
+                     
+                     if (retryCount === 0) {
+                         log(`⚙️ Using options: ${JSON.stringify(options)}`);
+                         document.getElementById('testBtn').disabled = true;
+                         showResult('🔄 Requesting current location...', 'info');
+                     }
+                     
+                     navigator.geolocation.getCurrentPosition(
+                         function(position) {
+                             log('✅ Location obtained successfully', 'success');
+                             showResult('✅ Location obtained successfully!', 'success');
+                             showCoordinates(position);
+                             document.getElementById('testBtn').disabled = false;
+                         },
+                         function(error) {
+                             let errorType = 'Unknown';
+                             let errorAdvice = '';
+                             let shouldRetry = false;
+                             
+                             switch(error.code) {
+                                 case error.PERMISSION_DENIED:
+                                     errorType = 'Permission denied by user';
+                                     errorAdvice = 'Please allow location access in your device settings and try again.';
+                                     break;
+                                 case error.POSITION_UNAVAILABLE:
+                                     errorType = 'Position unavailable';
+                                     errorAdvice = 'Location information is unavailable. Check your GPS/WiFi connection.';
+                                     // Sometimes iOS reports POSITION_UNAVAILABLE right after permission granted
+                                     shouldRetry = retryCount < 2;
+                                     break;
+                                 case error.TIMEOUT:
+                                     errorType = 'Request timeout';
+                                     errorAdvice = 'Location request timed out.';
+                                     // Retry on timeout, especially on first attempt (permission flow)
+                                     shouldRetry = retryCount < 2;
+                                     break;
+                             }
+                             
+                             log(`❌ Geolocation error: Code ${error.code} - ${error.message}`, 'error');
+                             
+                             // Auto-retry for iOS permission flow issues
+                             if (shouldRetry && retryCount < 2) {
+                                 log(`🔄 Will retry in 2 seconds (attempt ${retryCount + 1}/2)...`);
+                                 showResult(`⏳ ${errorType}. Retrying in 2 seconds...`, 'warning');
+                                 
+                                 setTimeout(() => {
+                                     testGeolocation(retryCount + 1);
+                                 }, 2000);
+                                 return;
+                             }
+                             
+                             const errorMsg = `❌ Error getting location:<br>
+                                 <strong>Error code:</strong> ${error.code}<br>
+                                 <strong>Error message:</strong> ${error.message}<br>
+                                 <strong>Type:</strong> ${errorType}<br>
+                                 <strong>Advice:</strong> ${errorAdvice}`;
+                             
+                             showResult(errorMsg, 'error');
+                             document.getElementById('testBtn').disabled = false;
+                         },
+                         options
+                     );
+                 }
                 
-                function testWatchPosition() {
-                    if (!navigator.geolocation) {
-                        showResult('❌ Geolocation is not supported', 'error');
-                        return;
-                    }
-                    
-                    if (watchId !== null) {
-                        log('⚠️ Already watching position', 'error');
-                        return;
-                    }
-                    
-                    log('👁️ Starting to watch position');
-                    document.getElementById('watchBtn').disabled = true;
-                    document.getElementById('stopBtn').disabled = false;
-                    
-                    const options = {
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        maximumAge: 0
-                    };
-                    
-                    watchId = navigator.geolocation.watchPosition(
-                        function(position) {
-                            log('📍 Position update received', 'success');
-                            showResult('📍 Position being watched (updates will appear below)', 'success');
-                            showCoordinates(position);
-                        },
-                        function(error) {
-                            log(`❌ Watch position error: ${error.message}`, 'error');
-                            showResult(`❌ Watch position failed: ${error.message}`, 'error');
-                            stopWatching();
-                        },
-                        options
-                    );
-                }
+                                 function testWatchPosition() {
+                     if (!navigator.geolocation) {
+                         showResult('❌ Geolocation is not supported', 'error');
+                         return;
+                     }
+                     
+                     if (watchId !== null) {
+                         log('⚠️ Already watching position', 'error');
+                         return;
+                     }
+                     
+                     log('👁️ Starting to watch position');
+                     document.getElementById('watchBtn').disabled = true;
+                     document.getElementById('stopBtn').disabled = false;
+                     showResult('🔄 Starting position watch...', 'info');
+                     
+                     const options = {
+                         enableHighAccuracy: true,
+                         timeout: 20000, // Longer timeout for watch
+                         maximumAge: 0
+                     };
+                     
+                     let firstPositionReceived = false;
+                     
+                     watchId = navigator.geolocation.watchPosition(
+                         function(position) {
+                             if (!firstPositionReceived) {
+                                 log('📍 First position received in watch mode', 'success');
+                                 showResult('📍 Position being watched - updates will appear below', 'success');
+                                 firstPositionReceived = true;
+                             } else {
+                                 log('📍 Position update received', 'success');
+                             }
+                             showCoordinates(position);
+                         },
+                         function(error) {
+                             log(`❌ Watch position error: Code ${error.code} - ${error.message}`, 'error');
+                             
+                             // Handle the same iOS permission issues
+                             if (error.code === error.TIMEOUT || error.code === error.POSITION_UNAVAILABLE) {
+                                 if (!firstPositionReceived) {
+                                     log('🔄 Watch position failed on first attempt, this might be iOS permission timing');
+                                     showResult(`⚠️ Watch failed initially (Code ${error.code}). Try "Test Current Location" first, then retry watch.`, 'warning');
+                                 } else {
+                                     showResult(`❌ Watch position error: ${error.message}`, 'error');
+                                 }
+                             } else {
+                                 showResult(`❌ Watch position failed: ${error.message}`, 'error');
+                             }
+                             
+                             stopWatching();
+                         },
+                         options
+                     );
+                 }
                 
                 function stopWatching() {
                     if (watchId !== null) {
@@ -305,35 +351,52 @@
                     document.getElementById('stopBtn').disabled = true;
                 }
                 
-                // Initialize page
-                window.addEventListener('load', function() {
-                    // Display browser info
-                    document.getElementById('userAgent').textContent = `User Agent: ${navigator.userAgent}`;
-                    document.getElementById('platform').textContent = `Platform: ${navigator.platform}`;
-                    document.getElementById('secure').textContent = `Secure Context: ${window.isSecureContext}`;
+                                 // Initialize page
+                 window.addEventListener('load', function() {
+                     // Display browser info
+                     document.getElementById('userAgent').textContent = `User Agent: ${navigator.userAgent}`;
+                     document.getElementById('platform').textContent = `Platform: ${navigator.platform}`;
+                     document.getElementById('secure').textContent = `Secure Context: ${window.isSecureContext}`;
+                     
+                     // Check if this is an iOS device
+                     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                     
+                     if (isIOS) {
+                         document.getElementById('iosNote').style.display = 'block';
+                         log('📱 iOS device detected - showing iOS-specific guidance');
+                     }
+                     
+                     // Check geolocation support
+                     const supportDiv = document.getElementById('geolocationSupport');
+                     if (navigator.geolocation) {
+                         supportDiv.innerHTML = '✅ Geolocation API is supported and ready';
+                         supportDiv.className = 'status success';
+                         log('✅ Geolocation API is available');
+                     } else {
+                         supportDiv.innerHTML = '❌ Geolocation API is not supported in this browser';
+                         supportDiv.className = 'status error';
+                         log('❌ Geolocation API not supported', 'error');
+                     }
                     
-                    // Check geolocation support
-                    const supportDiv = document.getElementById('geolocationSupport');
-                    if (navigator.geolocation) {
-                        supportDiv.innerHTML = '✅ Geolocation API is supported and ready';
-                        supportDiv.className = 'status success';
-                        log('✅ Geolocation API is available');
-                    } else {
-                        supportDiv.innerHTML = '❌ Geolocation API is not supported in this browser';
-                        supportDiv.className = 'status error';
-                        log('❌ Geolocation API not supported', 'error');
-                    }
-                    
-                    // Check permissions API if available
-                    if (navigator.permissions) {
-                        navigator.permissions.query({name: 'geolocation'}).then(function(result) {
-                            log(`📋 Permission status: ${result.state}`);
-                        }).catch(function(err) {
-                            log(`⚠️ Could not query permissions: ${err.message}`);
-                        });
-                    } else {
-                        log('📋 Permissions API not available');
-                    }
+                                         // Check permissions API if available
+                     if (navigator.permissions) {
+                         navigator.permissions.query({name: 'geolocation'}).then(function(result) {
+                             log(`📋 Permission status: ${result.state}`);
+                             
+                             // Listen for permission changes
+                             result.addEventListener('change', function() {
+                                 log(`📋 Permission changed to: ${result.state}`);
+                                 if (result.state === 'granted') {
+                                     log('✅ Permission granted! Location should now work.');
+                                 }
+                             });
+                         }).catch(function(err) {
+                             log(`⚠️ Could not query permissions: ${err.message}`);
+                         });
+                     } else {
+                         log('📋 Permissions API not available (normal on iOS)');
+                     }
                     
                     log('🌐 Page loaded and ready for geolocation testing');
                 });
